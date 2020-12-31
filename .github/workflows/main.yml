@@ -12,8 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
-      - name: Login to Heroku Container registry
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: cache setup
+        uses: satackey/action-docker-layer-caching@v0.0.11
+      # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+        
+      - name: heroku build/deploy
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
