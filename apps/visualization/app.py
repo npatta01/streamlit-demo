@@ -56,7 +56,7 @@ def display():
 
 
 
-        data = load_data(100_000)
+        data = load_data(50_000)
 
         midpoint = (np.median(data["latitude"]), np.median(data["longitude"]))
 
@@ -101,9 +101,9 @@ def display():
 
 
 
-        row1_1, row1_2 = st.beta_columns((2,2))
+        col_1, col_2 = st.beta_columns((2,2))
 
-        with row1_1:
+        with col_1:
             st.subheader("Breakdown by minute between %i:00 and %i:00" % (hour, (hour + 1) % 24))
             filtered = data[
                 (data["date_time"].dt.hour >= hour) & (data["date_time"].dt.hour < (hour + 1))
@@ -117,7 +117,7 @@ def display():
 
 
 
-        with row1_2:
+        with col_2:
             st.header("Top 5 dangerous streets by affected class")
             select = st.selectbox('Affected class', ['Pedestrians', 'Cyclists', 'Motorists'])
 
@@ -129,3 +129,19 @@ def display():
 
             else:
                 st.write(original_data.query("injured_motorists >= 1")[["on_street_name", "injured_motorists"]].sort_values(by=['injured_motorists'], ascending=False).dropna(how="any")[:5])
+
+
+        
+        
+        with st.beta_container():
+
+            st.markdown(
+                """
+                ## Acknowledgments
+                This app was inspired by the Coursera course [Build a Machine Learning Web App with Streamlit and Python](https://www.coursera.org/learn/machine-learning-streamlit-python/home/welcome)
+
+                
+                
+                """,
+                unsafe_allow_html=True,
+            )

@@ -1,3 +1,3 @@
 PORT=${PORT:-8000}
 
-streamlit run --server.port $PORT app.py
+streamlit run --server.port $PORT server.py

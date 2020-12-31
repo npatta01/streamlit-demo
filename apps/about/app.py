@@ -11,7 +11,15 @@ def display():
         st.markdown(
             """
             ## Contributions
-            This is a simple streamlit app showing a visualization and machine learning example.
+            This is a simple streamlit app. 
+            
+            The app has three apps:
+            - About: Simple markdown and iframe
+            - Machine Learning: Simple scikit-learn training and visualization
+            - Visualization: NY Crash map plots
+
+
+            
             
             """,
             unsafe_allow_html=True,

@@ -11,6 +11,8 @@ from sklearn.metrics import plot_confusion_matrix, plot_roc_curve, plot_precisio
 from sklearn.metrics import precision_score, recall_score 
 import os
 import typing
+import matplotlib.pyplot as plt
+
 
 from . import models, helper
 # import models 
@@ -18,6 +20,9 @@ from . import models, helper
 
 from logging import getLogger
 logger = getLogger(__file__)
+
+#plt.rcParams["figure.figsize"] = [16,9]
+
 
 
 @st.cache(persist=True)
@@ -38,26 +43,39 @@ def plot_metrics(metrics_list:typing.List[models.ModelMetrics],model_artifact):
     model = model_artifact.model
 
     for metric_choice in metrics_list:
-        st.subheader(metric_choice.value)
+        with st.beta_expander(metric_choice.value, expanded=True):
 
-        if metric_choice == models.ModelMetrics.CM:
-            display = plot_confusion_matrix(model,x_test,y_test,display_labels = model_artifact.class_names)
-            
-        elif metric_choice == models.ModelMetrics.ROC:
-            display=plot_roc_curve(model,x_test,y_test)
-        else:
-            display = plot_precision_recall_curve(model,x_test,y_test)
+            #st.subheader(metric_choice.value)
 
-        st.pyplot(display.figure_)
+            fig, ax = plt.subplots(figsize=(5, 5))
+
+            if metric_choice == models.ModelMetrics.CM:
+                display = plot_confusion_matrix(model,x_test,y_test,display_labels = model_artifact.class_names,ax=ax)
+                
+            elif metric_choice == models.ModelMetrics.ROC:
+                display=plot_roc_curve(model,x_test,y_test , ax=ax)
+            else:
+                display = plot_precision_recall_curve(model,x_test,y_test ,ax=ax)
+
+            # fig = display.figure_
+            # fig.set_figheight(5)
+            # fig.set_figwidth(5)
+
+            # fig.set_dpi(100)
+            st.pyplot(fig)
 
 
 def display():
     
 
+    section_padding_left, section_main, section_padding_right = st.beta_columns((1, 2, 1))
 
     section_sidebar = st.sidebar
-    section_main = st.beta_container()
-    section_other = st.beta_container()
+
+
+
+
+    
 
 
     df = load_data()
@@ -109,7 +127,11 @@ def display():
     with section_main:
         st.title("Binary Classification Web App")
         st.markdown("Are your mushrooms edible or poisonous ? 🍄")
+        st.text('Click classify on the left to see model results.')
+
         section_main_metrics = st.beta_container()
+
+        section_other = st.beta_container()
 
 
     with section_sidebar:
@@ -141,9 +163,20 @@ def display():
 
     with section_other:
         
-        with st.beta_expander("Other Info"):
+        with st.beta_expander("Raw Data", expanded=True):
             st.subheader("Mushroom Data Set Classification")
             st.write(df)
  
+        st.markdown(
+            """
+            ## Acknowledgments
+
+            This app was inspired by the Coursera course [Build a Data Science Web App with Streamlit and Python](https://www.coursera.org/learn/data-science-streamlit-python/home/welcome)
+
+            
+            
+            """,
+            unsafe_allow_html=True,
+        )
 
 #display()

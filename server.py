@@ -18,9 +18,8 @@ import apps.visualization.app
 
 
 logger = getLogger(__file__)
-logger.info("this is a test")
+logger.info(f"Running Streamlit app")
 
-logger.debug("this is a test debufg")
 
 
 

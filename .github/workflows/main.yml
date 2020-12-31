@@ -25,4 +25,4 @@ jobs:
 
           sleep 10
           
-          heroku logs --app ${APP_NAME}
+          heroku logs --app ${{ secrets.HEROKU_APP_NAME }}
