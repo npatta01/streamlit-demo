@@ -31,4 +31,3 @@ The app is deployed on Heroku using [github actions](.github/workflows/main.yml)
 
 The app is accessible here.
 https://np-streamlit.herokuapp.com/
-
